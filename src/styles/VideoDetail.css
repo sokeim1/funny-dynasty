@@ -1,0 +1,416 @@
+/* Добавляем поддержку Material Icons */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+  --gradient-primary: linear-gradient(135deg, #ff0000 0%, #ff4444 100%);
+  --gradient-hover: linear-gradient(135deg, #ff4444 0%, #ff0000 100%);
+  --gradient-surface: linear-gradient(180deg, rgba(32, 32, 32, 0.8) 0%, rgba(24, 24, 24, 0.95) 100%);
+  --gradient-button: linear-gradient(45deg, #ff0000 0%, #ff6b6b 100%);
+  --animation-duration: 0.3s;
+}
+
+.video-detail {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.video-container {
+  width: 100%;
+  background: var(--gradient-surface);
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform var(--animation-duration), box-shadow var(--animation-duration);
+}
+
+.video-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #000;
+}
+
+/* Plyr custom styles */
+.plyr {
+  --plyr-color-main: #ff0000;
+  --plyr-video-background: #000;
+  --plyr-menu-background: var(--gradient-surface);
+  --plyr-menu-border-radius: 1rem;
+  border-radius: 0;
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.plyr--video {
+  height: auto !important;
+}
+
+.react-player {
+  aspect-ratio: 16/9;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.video-info {
+  background: var(--gradient-surface);
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  transition: transform var(--animation-duration);
+}
+
+.video-info:hover {
+  transform: translateY(-2px);
+}
+
+.video-info h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleGlow 2s ease-in-out infinite;
+}
+
+.video-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.like-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  background: var(--gradient-button);
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 2rem;
+  transition: all var(--animation-duration);
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+}
+
+.like-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 0, 0, 0.3);
+}
+
+.like-button.liked {
+  background: var(--gradient-primary);
+  animation: likeAnimation 0.5s ease;
+}
+
+.like-button .material-icons {
+  font-size: 24px;
+  transition: transform var(--animation-duration);
+}
+
+.like-button:hover .material-icons {
+  transform: scale(1.2);
+}
+
+.comments-section {
+  background: var(--gradient-surface);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.5s ease-out;
+}
+
+.comments-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.comment-form {
+  margin-bottom: 2rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  transition: all var(--animation-duration);
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: #ff0000;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.comment-form button {
+  padding: 0.8rem 1.5rem;
+  background: var(--gradient-button);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--animation-duration);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+}
+
+.comment-form button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 0, 0, 0.3);
+}
+
+.cancel-reply {
+  background: transparent !important;
+  border: 2px solid #ff0000 !important;
+  box-shadow: none !important;
+}
+
+.cancel-reply:hover {
+  background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.comment {
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--animation-duration);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.comment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.3);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.comment-author {
+  font-weight: bold;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.comment-time {
+  color: var(--text-secondary);
+}
+
+.comment-text {
+  color: var(--text-color);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.action-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  transition: all var(--animation-duration);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.action-button:hover {
+  color: #ff0000;
+  background: rgba(255, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.action-button.delete:hover {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+.comment-replies {
+  margin-left: 2rem;
+  padding-left: 1rem;
+  border-left: 2px solid rgba(255, 0, 0, 0.2);
+}
+
+.comment-replies .comment {
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes likeAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes titleGlow {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .video-detail {
+    padding: 10px;
+  }
+
+  .video-info h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .comments-section {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .comments-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .comment-form textarea {
+    padding: 0.75rem;
+    min-height: 80px;
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .form-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .comment {
+    padding: 0.75rem;
+  }
+
+  .comment-replies {
+    margin-left: 1rem;
+    padding-left: 0.75rem;
+  }
+
+  .action-button {
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .like-button:active {
+    transform: scale(0.95);
+  }
+
+  .action-button:active {
+    background: #e0e0e0;
+  }
+
+  .action-button.delete:active {
+    background: #ffebee;
+    color: #f44336;
+  }
+}
+
+/* Tablet Optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .video-detail {
+    padding: 15px;
+  }
+
+  .video-info h1 {
+    font-size: 1.75rem;
+  }
+
+  .comments-section {
+    padding: 1.5rem;
+  }
+} 
