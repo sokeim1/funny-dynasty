@@ -10,7 +10,6 @@ router.get('/videos', async (req, res) => {
     if (!videos) {
       return res.status(404).json({ message: 'Видео не найдены' });
     }
-    console.log('Отправка видео:', videos);
     res.json(videos);
   } catch (error) {
     console.error('Ошибка при получении видео:', error);
@@ -34,7 +33,6 @@ router.get('/videos/:id', async (req, res) => {
 // Добавить новое видео
 router.post('/videos', async (req, res) => {
   try {
-    // Проверяем наличие всех необходимых полей
     const { title, video_url, category } = req.body;
     
     if (!title || !video_url || !category) {
@@ -43,20 +41,15 @@ router.post('/videos', async (req, res) => {
       });
     }
 
-    // Создаем новое видео
     const video = new Video({
       title,
       video_url,
       category,
       likes: 0,
-      views: 0
+      likedBy: []
     });
 
-    // Сохраняем в базу данных
     const savedVideo = await video.save();
-    console.log('Новое видео добавлено:', savedVideo);
-
-    // Возвращаем добавленное видео
     res.status(201).json(savedVideo);
   } catch (error) {
     console.error('Ошибка при добавлении видео:', error);
@@ -66,17 +59,38 @@ router.post('/videos', async (req, res) => {
   }
 });
 
-// Обновить лайки видео
+// Поставить/убрать лайк
 router.patch('/videos/:id/like', async (req, res) => {
   try {
+    const { userIp } = req.body;
+    if (!userIp) {
+      return res.status(400).json({ message: 'IP адрес пользователя обязателен' });
+    }
+
     const video = await Video.findById(req.params.id);
     if (!video) {
       return res.status(404).json({ message: 'Видео не найдено' });
     }
-    video.likes += 1;
+
+    const userLikedIndex = video.likedBy.indexOf(userIp);
+    
+    if (userLikedIndex === -1) {
+      // Пользователь еще не лайкал это видео
+      video.likes += 1;
+      video.likedBy.push(userIp);
+    } else {
+      // Пользователь уже лайкал это видео - убираем лайк
+      video.likes = Math.max(0, video.likes - 1);
+      video.likedBy.splice(userLikedIndex, 1);
+    }
+
     const updatedVideo = await video.save();
-    res.json(updatedVideo);
+    res.json({
+      likes: updatedVideo.likes,
+      isLiked: userLikedIndex === -1 // true если лайк был поставлен, false если убран
+    });
   } catch (error) {
+    console.error('Ошибка при обновлении лайков:', error);
     res.status(400).json({ message: error.message });
   }
 });

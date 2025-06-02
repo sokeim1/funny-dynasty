@@ -14,14 +14,16 @@ const videoSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['barboskiny', 'smeshariki', 'lentyaevo', 'luntik', 'tomandjerry', 'tmnt', 'football', 'toy_story', 'kung_fu_panda'],
     trim: true
   },
   likes: {
     type: Number,
-    default: 0,
-    min: 0
+    default: 0
   },
+  likedBy: [{
+    type: String, // IP адрес пользователя
+    required: true
+  }],
   views: {
     type: Number,
     default: 0,

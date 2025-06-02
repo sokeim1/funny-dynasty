@@ -4,6 +4,7 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import videoRoutes from './routes/videos.js';
+import categoriesRouter from './routes/categories.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +36,7 @@ try {
 
 // API routes с префиксом /api
 app.use('/api', videoRoutes);
+app.use('/api', categoriesRouter);
 
 // Serve React app
 app.get('*', (req, res) => {

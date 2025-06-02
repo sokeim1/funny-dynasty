@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Videos.css';
-import { getVideos, addVideo, updateVideoLikes } from '../api/videos';
+import { getVideos, addVideo, toggleVideoLike } from '../api/videos';
+import { getCategories, addCategory } from '../api/categories';
 
 const initialCategories = [
-  { id: 'all', name: 'Все' },
-  { id: 'barboskiny', name: 'Барбоскины' },
-  { id: 'smeshariki', name: 'Смешарики' },
-  { id: 'lentyaevo', name: 'Лентяево' },
-  { id: 'luntik', name: 'Лунтик' },
-  { id: 'tomandjerry', name: 'Том и Джерри' },
-  { id: 'tmnt', name: 'Черепашки ниндзя' },
-  { id: 'football', name: 'Футбол' },
-  { id: 'toy_story', name: 'История игрушек' },
-  { id: 'kung_fu_panda', name: 'Кунг-фу панда' }
+  { id: 'all', name: 'Все' }
 ];
 
 function Videos() {
@@ -29,32 +21,57 @@ function Videos() {
   });
   
   const [categories, setCategories] = useState(initialCategories);
-  const [customCategories, setCustomCategories] = useState([]);
-  const allCategories = [...categories, ...customCategories];
-
+  const [newCategoryInput, setNewCategoryInput] = useState('');
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
+        
+        // Загружаем категории
+        const fetchedCategories = await getCategories();
+        setCategories([...initialCategories, ...fetchedCategories]);
+        
+        // Загружаем видео
         const fetchedVideos = await getVideos();
         if (!Array.isArray(fetchedVideos)) {
           throw new Error('Неверный формат данных с сервера');
         }
         setVideos(fetchedVideos);
       } catch (err) {
-        setError('Ошибка при загрузке видео: ' + err.message);
-        console.error('Ошибка при загрузке видео:', err);
+        setError('Ошибка при загрузке данных: ' + err.message);
+        console.error('Ошибка при загрузке данных:', err);
       } finally {
         setLoading(false);
       }
     };
-    fetchVideos();
+    fetchData();
   }, []);
+
+  const handleAddCategory = async () => {
+    if (!newCategoryInput.trim()) {
+      alert('Введите название категории');
+      return;
+    }
+
+    try {
+      const categoryId = newCategoryInput.toLowerCase().replace(/\s+/g, '_');
+      const newCategory = await addCategory({
+        id: categoryId,
+        name: newCategoryInput.trim()
+      });
+      
+      setCategories(prev => [...prev, newCategory]);
+      setNewVideo(prev => ({...prev, category: categoryId}));
+      setNewCategoryInput('');
+    } catch (err) {
+      alert('Ошибка при добавлении категории: ' + err.message);
+    }
+  };
 
   const handleAddVideo = async (e) => {
     e.preventDefault();
@@ -71,13 +88,9 @@ function Videos() {
         category: newVideo.category
       };
 
-      // Добавляем видео в базу данных
       const addedVideo = await addVideo(videoData);
-      
-      // Сразу обновляем UI, добавляя новое видео в начало списка
       setVideos(prev => [addedVideo, ...prev]);
       
-      // Очищаем форму
       setNewVideo({
         title: '',
         video_url: '',
@@ -85,10 +98,7 @@ function Videos() {
         newCategory: ''
       });
       
-      // Показываем уведомление об успехе
       alert('Видео успешно добавлено!');
-      
-      // Закрываем форму
       setShowAddForm(false);
     } catch (err) {
       console.error('Ошибка при добавлении видео:', err);
@@ -98,10 +108,10 @@ function Videos() {
 
   const handleLike = async (videoId) => {
     try {
-      const updatedVideo = await updateVideoLikes(videoId);
+      const updatedVideo = await toggleVideoLike(videoId);
       setVideos(prevVideos => 
         prevVideos.map(video => 
-          video._id === videoId ? updatedVideo : video
+          video._id === videoId ? { ...video, likes: updatedVideo.likes } : video
         )
       );
     } catch (err) {
@@ -116,8 +126,8 @@ function Videos() {
   });
 
   const visibleCategories = showAllCategories 
-    ? allCategories 
-    : allCategories.slice(0, 5);
+    ? categories 
+    : categories.slice(0, 5);
 
   if (loading) {
     return (
@@ -174,9 +184,24 @@ function Videos() {
               required
             />
             <div className="category-selection">
-              <label>Выберите категорию:</label>
+              <label>Выберите категорию или создайте новую:</label>
+              <div className="new-category-input">
+                <input
+                  type="text"
+                  placeholder="Новая категория"
+                  value={newCategoryInput}
+                  onChange={(e) => setNewCategoryInput(e.target.value)}
+                />
+                <button 
+                  type="button"
+                  onClick={handleAddCategory}
+                  className="add-category-button"
+                >
+                  Добавить категорию
+                </button>
+              </div>
               <div className="category-grid">
-                {allCategories.filter(c => c.id !== 'all').map(category => (
+                {categories.filter(c => c.id !== 'all').map(category => (
                   <div 
                     key={category.id} 
                     className={`category-item ${newVideo.category === category.id ? 'selected' : ''}`}
@@ -192,23 +217,21 @@ function Videos() {
         )}
 
         <div className="category-filters">
-          <div className="category-grid">
-            {visibleCategories.map(category => (
-              <div
-                key={category.id}
-                className={`category-filter-item ${selectedCategory === category.id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-              </div>
-            ))}
-          </div>
-          {allCategories.length > 5 && (
+          {visibleCategories.map(category => (
+            <div
+              key={category.id}
+              className={`category-item ${selectedCategory === category.id ? 'selected' : ''}`}
+              onClick={() => setSelectedCategory(category.id)}
+            >
+              {category.name}
+            </div>
+          ))}
+          {categories.length > 5 && (
             <button 
               className="category-expand-button"
               onClick={() => setShowAllCategories(!showAllCategories)}
             >
-              {showAllCategories ? 'Показать меньше' : 'Показать больше'}
+              {showAllCategories ? '⬆️' : '⬇️'}
             </button>
           )}
         </div>
@@ -236,7 +259,7 @@ function Videos() {
             <h3>{video.title}</h3>
             <div className="video-card-info">
               <span className="category-tag">
-                {allCategories.find(c => c.id === video.category)?.name || video.category}
+                {categories.find(c => c.id === video.category)?.name || video.category}
               </span>
               <button 
                 className="likes-count"
