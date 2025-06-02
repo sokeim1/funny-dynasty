@@ -5,6 +5,7 @@ import 'plyr-react/plyr.css';
 import '../styles/VideoDetail.css';
 import { API_BASE_URL } from '../config/api';
 import { toggleVideoLike } from '../api/videos';
+import Comments from './Comments';
 
 function VideoDetail() {
   const { id } = useParams();
@@ -130,6 +131,8 @@ function VideoDetail() {
           </button>
         </div>
       </div>
+
+      <Comments videoId={id} />
 
       <Link to="/videos" className="back-button">
         Вернуться к списку видео

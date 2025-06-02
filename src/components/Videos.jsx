@@ -217,23 +217,27 @@ function Videos() {
         )}
 
         <div className="category-filters">
-          {visibleCategories.map(category => (
-            <div
-              key={category.id}
-              className={`category-item ${selectedCategory === category.id ? 'selected' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
-            >
-              {category.name}
-            </div>
-          ))}
-          {categories.length > 5 && (
-            <button 
-              className="category-expand-button"
-              onClick={() => setShowAllCategories(!showAllCategories)}
-            >
-              {showAllCategories ? '⬆️' : '⬇️'}
-            </button>
-          )}
+          <div className="category-list">
+            {visibleCategories.map((category, index) => (
+              <React.Fragment key={category.id}>
+                <div
+                  className={`category-item ${selectedCategory === category.id ? 'selected' : ''}`}
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  {category.name}
+                </div>
+                {index < visibleCategories.length - 1 && <span className="category-separator">-</span>}
+              </React.Fragment>
+            ))}
+            {categories.length > 5 && (
+              <button 
+                className="category-expand-button"
+                onClick={() => setShowAllCategories(!showAllCategories)}
+              >
+                {showAllCategories ? '⬆️' : '⬇️'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

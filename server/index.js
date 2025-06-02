@@ -5,12 +5,13 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import videoRoutes from './routes/videos.js';
 import categoriesRouter from './routes/categories.js';
+import commentsRouter from './routes/comments.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
 // Middleware
 app.use(cors());
@@ -37,6 +38,7 @@ try {
 // API routes с префиксом /api
 app.use('/api', videoRoutes);
 app.use('/api', categoriesRouter);
+app.use('/api', commentsRouter);
 
 // Serve React app
 app.get('*', (req, res) => {
