@@ -5,6 +5,7 @@ const AdminPanel = () => {
   const [videos, setVideos] = useState([]);
   const [comments, setComments] = useState([]);
   const [activeTab, setActiveTab] = useState('videos');
+<<<<<<< HEAD
   const [categories, setCategories] = useState([]);
   const [newVideo, setNewVideo] = useState({
     title: '',
@@ -17,6 +18,14 @@ const AdminPanel = () => {
   });
   const [showAddVideoForm, setShowAddVideoForm] = useState(false);
   const [showNewCategoryForm, setShowNewCategoryForm] = useState(false);
+=======
+  const [categories, setCategories] = useState([
+    { id: 'funny', name: 'Смешное' },
+    { id: 'fails', name: 'Неудачи' },
+    { id: 'animals', name: 'Животные' },
+    { id: 'other', name: 'Другое' }
+  ]);
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +36,10 @@ const AdminPanel = () => {
     }
     fetchVideos();
     fetchComments();
+<<<<<<< HEAD
     fetchCategories();
+=======
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
   }, [navigate]);
 
   const fetchVideos = async () => {
@@ -50,6 +62,7 @@ const AdminPanel = () => {
     }
   };
 
+<<<<<<< HEAD
   const fetchCategories = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/categories');
@@ -60,6 +73,8 @@ const AdminPanel = () => {
     }
   };
 
+=======
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
   const updateVideo = async (videoId, updates) => {
     try {
       const response = await fetch(`http://localhost:5001/api/videos/${videoId}`, {
@@ -120,6 +135,7 @@ const AdminPanel = () => {
     navigate('/');
   };
 
+<<<<<<< HEAD
   const addVideo = async (videoData) => {
     try {
       const response = await fetch('http://localhost:5001/api/videos', {
@@ -183,6 +199,8 @@ const AdminPanel = () => {
     await addVideo(newVideo);
   };
 
+=======
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
   return (
     <div style={{ 
       padding: '20px',
@@ -272,6 +290,7 @@ const AdminPanel = () => {
       </div>
 
       {/* Content */}
+<<<<<<< HEAD
       {activeTab === 'videos' && (
         <>
           {/* Add Video Button */}
@@ -377,16 +396,58 @@ const AdminPanel = () => {
                   type="submit"
                   style={{
                     padding: '12px 24px',
+=======
+      {activeTab === 'videos' ? (
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {videos.map(video => (
+            <div key={video._id} style={{ 
+              backgroundColor: '#2a2a2a',
+              padding: '20px',
+              borderRadius: '10px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '15px'
+              }}>
+                <input
+                  type="text"
+                  value={video.title}
+                  onChange={(e) => updateVideo(video._id, { title: e.target.value })}
+                  style={{
+                    flex: 1,
+                    marginRight: '15px',
+                    padding: '12px',
+                    backgroundColor: '#3a3a3a',
+                    border: '1px solid #444',
+                    color: 'white',
+                    borderRadius: '6px',
+                    fontSize: '14px'
+                  }}
+                />
+                <button
+                  onClick={() => deleteVideo(video._id)}
+                  style={{
+                    padding: '12px 20px',
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
                     backgroundColor: '#ff0000',
                     color: 'white',
                     border: 'none',
                     borderRadius: '6px',
                     cursor: 'pointer',
+<<<<<<< HEAD
                     width: '100%'
+=======
+                    fontSize: '14px',
+                    transition: 'background-color 0.2s'
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
                   }}
                   onMouseOver={e => e.target.style.backgroundColor = '#cc0000'}
                   onMouseOut={e => e.target.style.backgroundColor = '#ff0000'}
                 >
+<<<<<<< HEAD
                   Загрузить
                 </button>
               </form>
@@ -413,6 +474,14 @@ const AdminPanel = () => {
                 placeholder="Название категории"
                 value={newCategory.name}
                 onChange={(e) => setNewCategory({...newCategory, name: e.target.value})}
+=======
+                  Удалить
+                </button>
+              </div>
+              <select
+                value={video.category}
+                onChange={(e) => updateVideo(video._id, { category: e.target.value })}
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
                 style={{
                   width: '100%',
                   padding: '12px',
@@ -420,6 +489,7 @@ const AdminPanel = () => {
                   border: '1px solid #444',
                   color: 'white',
                   borderRadius: '6px',
+<<<<<<< HEAD
                   marginBottom: '15px'
                 }}
               />
@@ -536,6 +606,21 @@ const AdminPanel = () => {
       )}
 
       {activeTab === 'comments' ? (
+=======
+                  fontSize: '14px'
+                }}
+              >
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      ) : activeTab === 'comments' ? (
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
         <div style={{ display: 'grid', gap: '20px' }}>
           {comments.map(comment => (
             <div key={comment._id} style={{ 

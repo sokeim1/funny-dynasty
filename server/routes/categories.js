@@ -16,6 +16,7 @@ router.get('/categories', async (req, res) => {
 // Добавить новую категорию
 router.post('/categories', async (req, res) => {
   try {
+<<<<<<< HEAD
     const { name } = req.body;
     
     if (!name || !name.trim()) {
@@ -33,6 +34,19 @@ router.post('/categories', async (req, res) => {
 
     const category = new Category({
       name: name.trim()
+=======
+    const { id, name } = req.body;
+    
+    // Проверяем, существует ли уже категория с таким id
+    const existingCategory = await Category.findOne({ id });
+    if (existingCategory) {
+      return res.status(400).json({ message: 'Категория с таким ID уже существует' });
+    }
+
+    const category = new Category({
+      id,
+      name
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
     });
 
     const newCategory = await category.save();

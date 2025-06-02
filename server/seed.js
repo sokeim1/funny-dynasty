@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Video from './models/Video.js';
+<<<<<<< HEAD
 import Category from './models/Category.js';
 import { MONGODB_URI } from './config.js';
 
@@ -33,6 +34,10 @@ const initialVideos = [
     category: 'luntik'
   }
 ];
+=======
+
+const MONGODB_URI = 'mongodb://mongo:BhQCjOILatzKbeKXZsnuZmGNAdonJzSA@interchange.proxy.rlwy.net:12384';
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
 
 async function seedDatabase() {
   try {
@@ -43,6 +48,7 @@ async function seedDatabase() {
     console.log('MongoDB успешно подключена');
 
     // Очищаем существующие данные
+<<<<<<< HEAD
     await Promise.all([
       Category.deleteMany({}),
       Video.deleteMany({})
@@ -69,6 +75,15 @@ async function seedDatabase() {
     process.exit(0);
   } catch (error) {
     console.error('Ошибка при заполнении базы данных:', error);
+=======
+    await Video.deleteMany({});
+    console.log('Существующие видео удалены');
+
+    console.log('База данных успешно очищена');
+    process.exit(0);
+  } catch (error) {
+    console.error('Ошибка при очистке базы данных:', error);
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
     process.exit(1);
   }
 }

@@ -6,6 +6,7 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
+<<<<<<< HEAD
     default: function() {
       // Генерируем id из названия, если оно есть
       if (this.name) {
@@ -16,6 +17,9 @@ const categorySchema = new mongoose.Schema({
       }
       return 'category-' + new mongoose.Types.ObjectId().toString();
     }
+=======
+    index: true
+>>>>>>> 5c8780ed4f7592e737fd42210e46f8666155e80c
   },
   name: {
     type: String,
