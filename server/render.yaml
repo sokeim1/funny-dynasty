@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: funny-dynasty-server
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && node index.js
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: PORT
+        value: 5001 

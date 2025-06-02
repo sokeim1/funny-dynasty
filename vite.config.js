@@ -17,10 +17,11 @@ export default defineConfig({
       }
     }
   },
-  base: '/',
+  base: '/funny-dynasty/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    sourcemap: true,
     emptyOutDir: true,
   }
 })
